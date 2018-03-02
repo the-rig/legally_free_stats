@@ -1,14 +1,22 @@
 ---
 title: "National 'Legally Free' Rates"
-output: 
-  flexdashboard::flex_dashboard:
+resource_files:
+- StUS_GCS12.dbf
+- StUS_GCS12.prj
+- StUS_GCS12.sbn
+- StUS_GCS12.sbx
+- StUS_GCS12.shx
+runtime: shiny
+output:
+  flexdashboard::flex_dashboard: null
   orientation: columns
-vertical_layout: scroll
-social: [ "twitter", "facebook", "menu" ]
 source_code: embed
 theme: flatly
-runtime: shiny
-
+social:
+- twitter
+- facebook
+- menu
+vertical_layout: scroll
 ---
   
   
@@ -45,7 +53,7 @@ selectInput("ffy2", label = "Bottom map federal fiscal year: ",
 
 ```
 
-The map at the bottom-right shows the percentage of children who exit to "legal permanency"" from "legally free" status in each state within 1 year. Data are displayed based on the federal fiscal year (FFY) that a child entered "legally free" status. The maps are calculated using [AFCARS](https://www.acf.hhs.gov/cb/research-data-technology/reporting-systems/afcars) data obtained from [NDACAN](https://www.ndacan.cornell.edu/). Clicking on a state will display the number of entries to legally free status in that state over the selected FFY (choose above).
+The map at the bottom-right shows the percentage of children who exit to "legal permanency" from "legally free" status in each state within 1 year. Data are displayed based on the federal fiscal year (FFY) that a child entered "legally free" status. The maps are calculated using [AFCARS](https://www.acf.hhs.gov/cb/research-data-technology/reporting-systems/afcars) data obtained from [NDACAN](https://www.ndacan.cornell.edu/). Clicking on a state will display the number of entries to legally free status in that state over the selected FFY (choose above).
 
 
 Prepared by Partners for Our Children

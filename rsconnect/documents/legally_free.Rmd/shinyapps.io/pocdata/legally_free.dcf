@@ -1,0 +1,13 @@
+name: legally_free
+title: legally_free
+username:
+account: pocdata
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 291355
+bundleId: 1247962
+url: https://pocdata.shinyapps.io/legally_free/
+when: 1519951483.34204
+asMultiple: FALSE
+asStatic: FALSE
+additionalFiles: StUS_GCS12.dbf|StUS_GCS12.prj|StUS_GCS12.sbn|StUS_GCS12.sbx|StUS_GCS12.shx
