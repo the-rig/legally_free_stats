@@ -1,0 +1,450 @@
+Identification_Information:
+  Citation:
+    Citation_Information:
+      Originator:
+        United States Department of Agriculture, National Agricultural Statistics Service,
+        Research and Development Division, Geospatial Information Branch, Spatial Analysis
+        Research Section
+      Publication_Date: 2014
+      Title:
+        2012 Census of Agriculture State-Level Boundaries,
+        (StUS_GCS12.shp -.shx, -.dbf, -.sbn, -.sbx, -.prj,
+        StAK_GCS12.shp -.shx, -.dbf, -.sbn, -.sbx, -.prj,
+        StHI_GCS12.shp -.shx, -.dbf, -.sbn, -.sbx, -.prj,
+        StPR_GCS12.shp -.shx, -.dbf, -.sbn, -.sbx, -.prj)
+      Geospatial_Data_Presentation_Form: vector digital data
+      Publication_Information:
+        Publication_Place: Fairfax, Virginia
+        Publisher:
+          U.S. Department of Agriculture,
+          National Agricultural Statistics Service
+      Online_Linkage: http://www.agcensus.usda.gov/Publications/2012/Online_Highlights/Ag_Atlas_Maps/mapfiles/StGenAll_GCS12.zip
+
+  Description:
+    Abstract:
+      The United States Department of Agriculture (USDA), National Agricultural
+      Statistics Service (NASS) conducted an Agricultural Census in 2012.  The
+      statistical census data are summarized at the state, county, and U.S. levels
+      and are available in a digital format.  The Research and Development Division
+      of NASS modified generalized state boundaries to show geographic areas for
+      which the 2012 Agricultural Census statistics are reported at the state
+      level.  These state-level boundary files were used in the production of
+      the 2012 Census of Agriculture, Agricultural Atlas of the United States.
+      The boundary files can be employed in a Geographic Information System (GIS)
+      with the 2012 Agricultural Census statistical data by using the Agricultural
+      Census state codes to associate the state-level spatial entities with the
+      state-level statistical data.
+    Purpose:
+      The boundaries are intended for geographic display and analysis at the state
+      level.  The boundary data are designed for small scale thematic mapping
+      applications at a scale of 1:20,000,000 or smaller (e.g., 1:50,000,000, etc.).
+      The state-level boundaries are provided "as is".  The USDA/NASS does not
+      warrant the results you may obtain using the Agricultural Census state-level
+      boundary data.
+    Supplemental_Information:
+      These Agricultural Census state-level boundary files may be used with statistical
+      data in the 2012 Census of Agriculture, Volume 1, Geographic Area Series,
+      Parts 1 - 50, 52.
+  Time_Period_of_Content:
+    Time_Period_Information:
+      Range_of_Dates/Times:
+        Beginning_Date: 2012
+        Ending_Date: 2014
+    Currentness_Reference:
+      2014: Publication of state-level boundaries and land areas.
+      2012-2013: Production of state-level boundaries and land areas.
+  Status:
+    Progress: Complete
+    Maintenance_and_Update_Frequency: None planned
+  Spatial_Domain:
+    Bounding_Coordinates:
+      West_Bounding_Coordinate: -179.14734
+      East_Bounding_Coordinate: -65.22157
+      North_Bounding_Coordinate: 71.352561
+      South_Bounding_Coordinate: 17.926875
+  Keywords:
+    Theme:
+      Theme_Keyword_Thesaurus:
+        National Agricultural Statistics Service, U.S. Department of 
+        Agriculture, 2012 Census of Agriculture, Volume 1, Geographic Area Series, 
+        Parts 1 - 50, 52, Washington, D.C., NASS/USDA.
+      Theme_Keyword: 2012 Census of Agriculture statistics for states
+    Place:
+      Place_Keyword_Thesaurus:
+        U.S. Department of Commerce, 1987, Codes for the Identification of the
+        States, the District of Columbia and the Outlying Areas of The United
+        States, and Associated Areas (Federal Information Processing Standard
+        5-2):  Washington, D.C., National Institute of Standards and Technology.
+        http://www.itl.nist.gov/fipspubs/fip5-2.htm
+      Place_Keyword: U.S. States
+      Place_Keyword: Puerto Rico
+  Access_Constraints: None
+  Use_Constraints:
+    None.  Acknowledgment of the U.S. Department of Agriculture, National
+    Agricultural Statistics Service would be appreciated in products
+    derived from these data files.
+  Point_of_Contact:
+    Contact_Information:
+      Contact_Person_Primary:
+        Contact_Person: Spatial Analysis Research Section staff
+        Contact_Organization: USDA/NASS/RDD/GIB/SARS
+      Contact_Address:
+        Address_Type: mailing address
+        Address: 3251 Old Lee Highway, Suite 305
+        City: Fairfax
+        State_or_Province: VA
+        Postal_Code: 22030
+      Contact_Voice_Telephone: 703-877-8000
+      Contact_Facsimile_Telephone: 703-877-8044
+      Contact_Electronic_Mail_Address: HQ_RDD_OD_Staff@nass.usda.gov
+  Data_Set_Credit: Research and Development Division staff
+  Native_Data_Set_Environment:
+    Microsoft Windows XP; Environmental Systems Research Institute (ESRI) ArcGIS 10.0 shapefile.
+
+Data_Quality_Information:
+  Attribute_Accuracy:
+    Attribute_Accuracy_Report:
+      Unmodified entities have entity codes and names which conform to
+      the Federal Information Processing Standard 5-2.  Area values in
+      square miles are derived from land polygon area values from the
+      U.S. Census Bureau's TIGER database.
+  Logical_Consistency_Report: No topological checks were performed on the data.
+  Completeness_Report:
+    The generalized data do NOT include 1) boundaries for the Aleutian
+    Islands in the Eastern Hemisphere, 2) boundaries for Hawaiian Islands
+    west of -160.555771 degrees longitude, 3) very small polygons because of
+    coordinate thinning, and 4) water polygons.  This data set provides the
+    land area in square miles and number of acres for each state equivalent.
+    The land area values are based on the area of land polygons from the U.S.
+    Census Bureau's TIGER database.  If a state is composed of several polygons,
+    the area value assigned to each polygon is the land area value of the entire
+    state (for the purpose of choropleth mapping).  The state-level boundary for
+    Maryland was modified to include the District of Columbia (D.C.), because
+    Agricultural Census data for D.C. are not reported separately.  State-level
+    Federal Information Processing (FIPS) codes are used to identify states.
+    Because Maryland and D.C. state boundaries were aggregated, Maryland's FIPS
+    code 24 represents Maryland (24) and D.C. (11).
+  Positional_Accuracy:
+    Horizontal_Positional_Accuracy:
+      Horizontal_Positional_Accuracy_Report:
+        The state-level boundary data are highly generalized and suitable
+        for use in small scale (1:20,000,000) thematic mapping applications.
+        No accuracy tests were performed.
+  Lineage:
+    Source_Information:
+      Source_Citation:
+        Citation_Information:
+          Originator: USDA, National Agricultural Statistics Service
+          Publication_Date: 2012
+          Title: Source for 2012 Agricultural Census state-level boundary file
+          Publication_Information:
+            Publication_Place: Washington, DC
+            Publisher: USDA, National Agricultural Statistics Service
+      Source_Scale_Denominator: 20000000
+      Type_of_Source_Media: online
+      Source_Time_Period_of_Content:
+        Time_Period_Information:
+          Single_Date/Time:
+            Calendar_Date: 2012
+        Source_Currentness_Reference: publication date
+      Source_Citation_Abbreviation: SUMSQMIUSCO12
+      Source_Contribution: spatial and attribute information
+    Source_Information:
+      Source_Citation:
+        Citation_Information:
+          Originator: USDA, National Agricultural Statistics Service
+          Publication_Date: 2012
+          Title: 2012 Agricultural Census state-level boundary file created with land area in square miles
+          Publication_Information:
+            Publication_Place: Washington, DC
+            Publisher: USDA, National Agricultural Statistics Service
+      Source_Scale_Denominator: 20000000
+      Type_of_Source_Media: online
+      Source_Time_Period_of_Content:
+        Time_Period_Information:
+          Single_Date/Time:
+            Calendar_Date: 2012
+        Source_Currentness_Reference: publication date
+      Source_Citation_Abbreviation: SQMIUSST12
+      Source_Contribution: spatial and attribute information
+    Source_Information:
+      Source_Citation:
+        Citation_Information:
+          Originator: USDA, National Agricultural Statistics Service
+          Publication_Date: 2013
+          Title: 2012 Agricultural Census state-level boundary files attributed and land acreage calculated
+          Publication_Information:
+            Publication_Place: Washington, DC
+            Publisher: USDA, National Agricultural Statistics Service
+      Source_Scale_Denominator: 20000000
+      Type_of_Source_Media: online
+      Source_Time_Period_of_Content:
+        Time_Period_Information:
+          Single_Date/Time:
+            Calendar_Date: 2013
+        Source_Currentness_Reference: publication date
+      Source_Citation_Abbreviation: ACREUSST12
+      Source_Contribution: spatial and attribute information
+    Source_Information:
+      Source_Citation:
+        Citation_Information:
+          Originator: USDA, National Agricultural Statistics Service
+          Publication_Date: 2013
+          Title: 2012 Agricultural Census state-level boundary files extracted and projected for US, AK, HI, PR
+          Publication_Information:
+            Publication_Place: Washington, DC
+            Publisher: USDA, National Agricultural Statistics Service
+      Source_Scale_Denominator: 20000000
+      Type_of_Source_Media: online
+      Source_Time_Period_of_Content:
+        Time_Period_Information:
+          Single_Date/Time:
+            Calendar_Date: 2013
+        Source_Currentness_Reference: publication date
+      Source_Citation_Abbreviation: StUSAKHIPR_AEA12
+      Source_Contribution: spatial and attribute information
+    Source_Information:
+      Source_Citation:
+        Citation_Information:
+          Originator: USDA, National Agricultural Statistics Service
+          Publication_Date: 2013
+          Title: Final unprojected 2012 Agricultural Census state-level boundary files for US, AK, HI, PR
+          Publication_Information:
+            Publication_Place: Washington, DC
+            Publisher: USDA, National Agricultural Statistics Service
+      Source_Scale_Denominator: 20000000
+      Type_of_Source_Media: online
+      Source_Time_Period_of_Content:
+        Time_Period_Information:
+          Single_Date/Time:
+            Calendar_Date: 2013
+        Source_Currentness_Reference: publication date
+      Source_Citation_Abbreviation: StUSAKHIPR_GCS12
+      Source_Contribution: spatial and attribute information
+    Process_Step:
+      Process_Description:
+        1 - Obtain source file to create 2012 Agricultural Census state-level boundary file.
+        The aggregated (dissolved) 2012 Agricultural Census county-level boundary file was 
+        created by a separate process and is the source file for the 2012 Agricultural
+        Census state-level boundary file (see metadata for 2012 Agricultural Census 
+        county-level boundary file).
+      Source_Used_Citation_Abbreviation: SUMSQMIUSCO12
+      Process_Date: 2012
+    Process_Step:
+      Process_Description:
+        2 - Creation of Agricultural Census state-level boundary file. 
+        State boundaries were aggregated (dissolved) on the Agricultural Census
+        state (FIPS) codes. County land area values were summed to produce state
+        land area values in square miles. 
+      Source_Used_Citation_Abbreviation: SUMSQMIUSCO12
+      Source_Produced_Citation_Abbreviation: SQMIUSST12
+      Process_Date: 2012
+    Process_Step:
+      Process_Description:
+        3 - Update of state-level boundary file.
+        The 2012 Agricultural Census state boundary files were updated with 2012 attribute 
+        values. The state acreage fields were populated by multiplying the state land area 
+        in square miles by 640 (1 sq. mi. = 640 ac.).
+      Source_Used_Citation_Abbreviation: SQMIUSST12
+      Source_Produced_Citation_Abbreviation: ACREUSST12
+      Process_Date: 2012
+    Process_Step:
+      Process_Description:
+        4 - Extract and project Agricultural Census state-level boundary files for US, AK, HI, PR.
+        Extracted Agricultural Census state-level boundary files to create separate shapefiles 
+        for the continental US, AK, HI, and PR. Reprojected shapefiles to custom Albers Equal Area 
+        projections.
+      Source_Used_Citation_Abbreviation: ACREUSST12
+      Process_Date: 2013
+      Source_Produced_Citation_Abbreviation: StUSAKHIPR_AEA12
+    Process_Step:
+      Process_Description:
+        5 - Unproject Agricultural Census state-level boundary files.
+        The Agricultural Census state-level boundary files for the continental US,
+        AK, HI, and PR were (un)projected to Geographic Coordinate System (GCS), 
+        North American Datum of 1983 (NAD83).
+      Source_Used_Citation_Abbreviation: StUSAKHIPR_AEA12
+      Process_Date: 2013
+      Source_Produced_Citation_Abbreviation: StUSAKHIPR_GCS12
+
+Spatial_Data_Organization_Information:
+  Indirect_Spatial_Reference:
+        U.S. Department of Commerce, 1987, Codes for the Identification of the
+        States, the District of Columbia and the Outlying Areas of The United
+        States, and Associated Areas (Federal Information Processing Standard
+        5-2):  Washington, D.C., National Institute of Standards and Technology.
+        http://www.itl.nist.gov/fipspubs/fip5-2.htm
+  Direct_Spatial_Reference_Method: Vector
+  Point_and_Vector_Object_Information:
+    SDTS_Terms_Description:
+      SDTS_Point_and_Vector_Object_Type: G-Polygon
+      Point_and_Vector_Object_Count: 51
+
+Spatial_Reference_Information:
+  Horizontal_Coordinate_System_Definition:
+    Geographic:
+      Latitude_Resolution: .000001
+      Longitude_Resolution: .000001
+      Geographic_Coordinate_Units: Decimal Degrees
+    Geodetic_Model:
+      Horizontal_Datum_Name: North American Datum of 1983
+      Ellipsoid_Name: Geodetic Reference System 80
+      Semi-major_Axis: 6378137.0
+      Denominator_of_Flattening_Ratio: 298.257222
+
+Entity_and_Attribute_Information:
+  Detailed_Description:
+    Entity_Type:
+      Entity_Type_Label: StUS_GCS12/StAK_GCS12/StHI_GCS12/StPR_GCS12
+      Entity_Type_Definition:
+        State-level boundaries of geographic areas for which 2012 Agricultural
+        Census statistics are reported.
+      Entity_Type_Definition_Source: USDA, National Agricultural Statistics Service.
+    Attribute:
+      Attribute_Label: FID
+      Attribute_Definition: Internal feature identification number.
+      Attribute_Definition_Source: ESRI
+      Attribute_Domain_Values:
+        Unrepresentable_Domain: Sequential unique whole numbers automatically generated.
+    Attribute:
+      Attribute_Label: SHAPE
+      Attribute_Definition: Feature geometry.
+      Attribute_Definition_Source: ESRI
+      Attribute_Domain_Values:
+        Unrepresentable_Domain: Coordinates defining the features.
+    Attribute:
+      Attribute_Label: ATLAS_ST
+      Attribute_Definition: State equivalent FIPS code.
+      Attribute_Definition_Source: USDA, National Agricultural Statistics Service
+      Attribute_Domain_Values:
+        Codeset_Domain:
+          Codeset_Name:
+            U.S. Department of Commerce, 1987, Codes for the Identification of the
+            States, the District of Columbia and the Outlying Areas of The United
+            States, and Associated Areas (Federal Information Processing Standard
+            5-2):  Washington, D.C., National Institute of Standards and Technology.
+          Codeset_Source: U.S. Bureau of the Census
+    Attribute:
+      Attribute_Label: ST_ABBREV
+      Attribute_Definition: State equivalent abbreviation.
+      Attribute_Definition_Source: USDA, National Agricultural Statistics Service
+      Attribute_Domain_Values:
+        Codeset_Domain:
+          Codeset_Name:
+            U.S. Department of Commerce, 1987, Codes for the Identification of the
+            States, the District of Columbia and the Outlying Areas of The United
+            States, and Associated Areas (Federal Information Processing Standard
+            5-2):  Washington, D.C., National Institute of Standards and Technology.
+          Codeset_Source: U.S. Bureau of the Census
+    Attribute:
+      Attribute_Label: ATLAS_NAME
+      Attribute_Definition: Lowercase state equivalent name.
+      Attribute_Definition_Source: USDA, National Agricultural Statistics Service
+      Attribute_Domain_Values:
+        Codeset_Domain:
+          Codeset_Name:
+            U.S. Department of Commerce, 1987, Codes for the Identification of the
+            States, the District of Columbia and the Outlying Areas of The United
+            States, and Associated Areas (Federal Information Processing Standard
+            5-2):  Washington, D.C., National Institute of Standards and Technology.
+          Codeset_Source: U.S. Bureau of the Census
+    Attribute:
+      Attribute_Label: ATLAS_CAPS
+      Attribute_Definition: Uppercase state equivalent name.
+      Attribute_Definition_Source: USDA, National Agricultural Statistics Service
+      Attribute_Domain_Values:
+        Codeset_Domain:
+          Codeset_Name:
+            U.S. Department of Commerce, 1987, Codes for the Identification of the
+            States, the District of Columbia and the Outlying Areas of The United
+            States, and Associated Areas (Federal Information Processing Standard
+            5-2):  Washington, D.C., National Institute of Standards and Technology.
+          Codeset_Source: U.S. Bureau of the Census
+    Attribute:
+      Attribute_Label: ATLAS_AREA
+      Attribute_Definition: Land area in square miles of a state equivalent.
+      Attribute_Definition_Source: USDA, National Agricultural Statistics Service
+      Attribute_Domain_Values:
+        Range_Domain:
+          Range_Domain_Minimum: 1033.79218 (actual value, not min. range value)
+          Range_Domain_Maximum: 571895.5526 (actual value, not max. range value)
+          Attribute_Units_of_Measure: Square mile
+    Attribute:
+      Attribute_Label: ATLAS_ACRE
+      Attribute_Definition: Land area in acres of a state equivalent.
+      Attribute_Definition_Source: USDA, National Agricultural Statistics Service
+      Attribute_Domain_Values:
+        Range_Domain:
+          Range_Domain_Minimum: 661626.99264 (actual value, not min. range value)
+          Range_Domain_Maximum: 366013153.664 (actual value, not max. range value)
+          Attribute_Units_of_Measure: Acre
+    Attribute:
+      Attribute_Label: ENTITY
+      Attribute_Definition: Type of state-level entity.
+      Attribute_Definition_Source: USDA, National Agricultural Statistics Service
+      Attribute_Domain_Values:
+        Enumerated_Domain:
+          Enumerated_Domain_Value: State, State Equivalent
+          Enumerated_Domain_Value_Definition: Type of state-level entity.
+          Enumerated_Domain_Value_Definition_Source:
+            U.S. Department of Commerce, 1987, Codes for the Identification of the
+            States, the District of Columbia and the Outlying Areas of The United
+            States, and Associated Areas (Federal Information Processing Standard
+            5-2):  Washington, D.C., National Institute of Standards and Technology.
+
+Distribution_Information:
+  Distributor:
+    Contact_Information:
+      Contact_Organization_Primary:
+        Contact_Organization: USDA, NASS Customer service
+      Contact_Address:
+        Address_Type: mailing address
+        Address: 1400 Independence Avenue
+        City: Washington
+        State_or_Province: District of Columbia
+        Postal_Code: 20250
+        Country: USA
+      Contact_Voice_Telephone: 1-800-727-9540
+      Contact_Facsimile_Telephone: 202-690-2090
+      Contact_Electronic_Mail_Address: nass@nass.usda.gov
+  Resource_Description: United States: 2012 Census of Agriculture downloadable state-level boundary files.
+  Distribution_Liability:
+    Users of the Agricultural Census state-level boundary data are solely responsible for
+    interpretations made from the product.  The boundary data are provided "as is".  
+    USDA/NASS does not warrant results you may obtain by using the boundary data.  
+    Feel free to contact our staff at (HQ_RDD_OD_Staff@nass.usda.gov) if technical
+    questions arise in the use of the state-level boundary data.
+  Standard_Order_Process:
+    Digital_Form:
+      Digital_Transfer_Information:
+        Format_Name: ESRI Shapefile (.shp, .shx., .dbf, .sbn, .sbx, .prj)
+        Transfer_Size: .598
+      Digital_Transfer_Option:
+        Online_Option:
+          Computer_Contact_Information:
+            Network_Address:
+              Network_Resource_Name: http://www.agcensus.usda.gov/Publications/2012/Online_Highlights/Ag_Atlas_Maps/mapfiles/StGenAll_GCS12.zip
+    Fees: There is no charge for online option.
+
+Metadata_Reference_Information:
+  Metadata_Date: 20131127
+  Metadata_Contact:
+    Contact_Information:
+      Contact_Organization_Primary:
+        Contact_Organization: USDA/NASS/RDD/GIB/SARS
+      Contact_Address:
+        Address_Type: mailing and physical address
+        Address: 3251 Old Lee Highway, Suite 305
+        City: Fairfax
+        State_or_Province: VA
+        Postal_Code: 22030
+        Country: USA
+      Contact_Voice_Telephone: 703-877-8000
+      Contact_Facsimile_Telephone: 703-877-8044
+      Contact_Electronic_Mail_Address: HQ_RDD_OD_Staff@nass.usda.gov
+  Metadata_Standard_Name: FGDC Content Standards for Digital Geospatial Metadata
+  Metadata_Standard_Version: FGDC-STD-001-1998
+  Metadata_Security_Information:
+    Metadata_Security_Classification_System: None
+    Metadata_Security_Classification: Unclassified
+    Metadata_Security_Handling_Description: None
