@@ -41,6 +41,10 @@ hr()
 selectInput("ffy", label = "Top map federal fiscal year: ",
             choices = 2010:2016, selected = 2016)
 
+selectInput("age_at_latrem", label = "Age group at last removal: "
+            , choices = c("All" = 0, "0-4" = 1, "5-9" = 2, "10-14" = 3, "15-17" = 4)
+            , selected = 0)
+
 ```
 
 The map at the top-right shows the point-in-time percentage of legally free children in each state in a federal fiscal year (choose above). The maps are based on [AFCARS](https://www.acf.hhs.gov/cb/research-data-technology/reporting-systems/afcars) data obtained from [NDACAN](https://www.ndacan.cornell.edu/). Clicking on a state will display the numerator and denominator data on which the percentages are based. 
@@ -50,6 +54,10 @@ hr()
 
 selectInput("ffy2", label = "Bottom map federal fiscal year: ",
             choices = 2010:2015, selected = 2015)
+
+selectInput("age_at_lf", label = "Age group when legally free: "
+            , choices = c("All" = 0, "0-4" = 1, "5-9" = 2, "10-14" = 3, "15-17" = 4)
+            , selected = 0)
 
 ```
 
@@ -67,14 +75,21 @@ Maps
 states <- readOGR("StUS_GCS12.shp",
                   layer = "StUS_GCS12", GDAL1_integer64_policy = TRUE, verbose = FALSE)
 
-dat_legally_free <- read.csv("legally_free.csv")
+dat_legally_free <- read.csv("legally_free_ages.csv")
+
+# creating ref table 
+
+cd_age <- 0:4
+tx_age <- c("All", "0-4", "5-9", "10-14", "15-17")
+ref_age_groups <- data.frame(cd_age, tx_age)
 
 # state specific zipcodes and data
 STATE_SHP <- reactive({
   
 states@data <- states@data %>%
   inner_join(dat_legally_free, by = c("st_abbrev" = "st")) %>%
-  filter(ffy == input$ffy)
+  filter(ffy == input$ffy, age_at_latrem == input$age_at_latrem) %>%
+  left_join(ref_age_groups, by = c("age_at_latrem" = "cd_age"))
 
 STATE_SHP <- states
   
@@ -97,7 +112,11 @@ state_popup <- paste0("<h3><strong>",
                       "there were <strong>",
                       prettyNum(STATE_SHP()$total_kids_in_care_first_day, big.mark = ","),
                       "</strong>",
-                      " children in foster care. <br><br>According to <a href='https://www.acf.hhs.gov/cb/research-data-technology/reporting-systems/afcars'>AFCARS</a> data, <strong>",
+                      " children", 
+                      "<strong>",
+                      ifelse(STATE_SHP()$tx_age != 'All', paste0(", ages ", as.character(STATE_SHP()$tx_age), ","), " "),
+                      "</strong>",
+                      " in foster care. <br><br>According to <a href='https://www.acf.hhs.gov/cb/research-data-technology/reporting-systems/afcars'>AFCARS</a> data, <strong>",
                       prettyNum(STATE_SHP()$legally_free_first_day, big.mark = ","),
                       "</strong> of those children",
                       " were legally free."
@@ -128,14 +147,15 @@ leaflet(data = STATE_SHP()) %>%
 states <- readOGR("StUS_GCS12.shp",
                   layer = "StUS_GCS12", GDAL1_integer64_policy = TRUE, verbose = FALSE)
 
-dat_legally_free <- read.csv("legally_free.csv")
+# dat_legally_free <- read.csv("legally_free_ages.csv") 
 
 # state specific zipcodes and data
 STATE_SHP2 <- reactive({
   
 states@data <- states@data %>%
   inner_join(dat_legally_free, by = c("st_abbrev" = "st")) %>%
-  filter(ffy == input$ffy2)
+  filter(ffy == input$ffy2, age_at_latrem == input$age_at_lf) %>%
+  left_join(ref_age_groups, by = c("age_at_latrem" = "cd_age"))
 
 STATE_SHP2 <- states
   
@@ -155,10 +175,14 @@ state_popup <- paste0("<h3><strong>",
                       "over federal fiscal year <strong>", 
                       STATE_SHP2()$ffy, 
                       "</strong>, ",
-                      "there were <strong>",
+                      "there were <strong>", 
                       prettyNum(STATE_SHP2()$became_legally_free, big.mark = ","),
                       "</strong>",
-                      " children who became legally free (i.e. had a TPR against both parents). <br><br>According to <a href='https://www.acf.hhs.gov/cb/research-data-technology/reporting-systems/afcars'>AFCARS</a> data, <strong>",
+                      " children", 
+                      "<strong>",
+                      ifelse(STATE_SHP2()$tx_age != 'All', paste0(", ages ", as.character(STATE_SHP2()$tx_age), ","), " "),
+                      "</strong>",
+                      " who became legally free (i.e. had a TPR against both parents). <br><br>According to <a href='https://www.acf.hhs.gov/cb/research-data-technology/reporting-systems/afcars'>AFCARS</a> data, <strong>",
                       scales::percent(STATE_SHP2()$per_exit_one_year),
                       "</strong> of children who entered legally free status in ",
                       "<strong>", 
