@@ -32,13 +32,30 @@ library(knitr)
 library(shiny)
 ```
 
+```{r}
+states <- readOGR("StUS_GCS12.shp",
+                  layer = "StUS_GCS12", GDAL1_integer64_policy = TRUE, verbose = FALSE)
+
+dat_legally_free <- read.csv("legally_free_ages.csv")
+
+# creating ref table 
+
+cd_age <- 0:4
+tx_age <- c("All", "0-4", "5-9", "10-14", "15-17")
+ref_age_groups <- data.frame(cd_age, tx_age)
+
+```
+
+
+Point-In-Time Rates
+=======================================================================
 
 Choose a Year {.sidebar}
 -------------------------------------
 ```{r}
 hr()
 
-selectInput("ffy", label = "Top map federal fiscal year: ",
+selectInput("ffy", label = "Federal fiscal year: ",
             choices = 2010:2016, selected = 2016)
 
 selectInput("age_at_latrem", label = "Age group at last removal: "
@@ -47,22 +64,7 @@ selectInput("age_at_latrem", label = "Age group at last removal: "
 
 ```
 
-The map at the top-right shows the point-in-time percentage of legally free children in each state in a federal fiscal year (choose above). The maps are based on [AFCARS](https://www.acf.hhs.gov/cb/research-data-technology/reporting-systems/afcars) data obtained from [NDACAN](https://www.ndacan.cornell.edu/). Clicking on a state will display the numerator and denominator data on which the percentages are based. 
-
-```{r}
-hr()
-
-selectInput("ffy2", label = "Bottom map federal fiscal year: ",
-            choices = 2010:2015, selected = 2015)
-
-selectInput("age_at_lf", label = "Age group when legally free: "
-            , choices = c("All" = 0, "0-4" = 1, "5-9" = 2, "10-14" = 3, "15-17" = 4)
-            , selected = 0)
-
-```
-
-The map at the bottom-right shows the percentage of children who exit to "legal permanency" from "legally free" status in each state within 1 year. Data are displayed based on the federal fiscal year (FFY) that a child entered "legally free" status. The maps are calculated using [AFCARS](https://www.acf.hhs.gov/cb/research-data-technology/reporting-systems/afcars) data obtained from [NDACAN](https://www.ndacan.cornell.edu/). Clicking on a state will display the number of entries to legally free status in that state over the selected FFY (choose above).
-
+This map shows the point-in-time percentage of legally free children in each state in a federal fiscal year (choose above). The maps are based on [AFCARS](https://www.acf.hhs.gov/cb/research-data-technology/reporting-systems/afcars) data obtained from [NDACAN](https://www.ndacan.cornell.edu/). Clicking on a state will display the numerator and denominator data on which the percentages are based. 
 
 Prepared by Partners for Our Children
 
@@ -140,7 +142,32 @@ leaflet(data = STATE_SHP()) %>%
   
 })
 ```
-    
+
+Entries To and Exits From "Legally Free"
+=======================================================================    
+
+Choose a Year {.sidebar}
+-------------------------------------
+
+```{r}
+hr()
+
+selectInput("ffy2", label = "Federal fiscal year: ",
+            choices = 2010:2015, selected = 2015)
+
+selectInput("age_at_lf", label = "Age group when legally free: "
+            , choices = c("All" = 0, "0-4" = 1, "5-9" = 2, "10-14" = 3, "15-17" = 4)
+            , selected = 0)
+
+```
+
+This map at the shows the percentage of children who exit to "legal permanency" from "legally free" status in each state within 1 year. Data are displayed based on the federal fiscal year (FFY) that a child entered "legally free" status. The maps are calculated using [AFCARS](https://www.acf.hhs.gov/cb/research-data-technology/reporting-systems/afcars) data obtained from [NDACAN](https://www.ndacan.cornell.edu/). Clicking on a state will display the number of entries to legally free status in that state over the selected FFY (choose above).
+
+Prepared by Partners for Our Children
+
+Maps
+-------------------------------------
+
 ### Entries To and Exits From "Legally Free"
 
 ```{r}
@@ -209,4 +236,4 @@ leaflet(data = STATE_SHP2()) %>%
   
 })
 ```
-
+    
