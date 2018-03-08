@@ -304,20 +304,64 @@ renderPlot({
 
 ```
 
+```{r}
+
+
+```
+
+
 Next tab
+=======================================================================  
+
+High Charts Attempt
+=======================================================================  
+
+Choose a Year {.sidebar}
+-------------------------------------
+
+```{r}
+hr()
+
+selectInput("ffy3", label = "Federal fiscal year: ",
+            choices = 2010:2015, selected = 2015)
+
+
+selectInput("age_at_start2", label = "Age group when entering care: "
+            , choices = c("All" = 0, "0-4" = 1, "5-9" = 2, "10-14" = 3, "15-17" = 4)
+            , selected = 0)
+
+```
+
+GGVIS Attempt
 =======================================================================  
 
 Graph
 -------------------------------------
 
-###  
+```{r}
+
+vis <- reactive({
+  
+# data_input <- dat_legally_free %>%
+#   filter(ffy == input$ffy3, age_at_start == input$age_at_start2) %>%
+#     filter(per_leg_free_first_day != 0)
+
+  dat_legally_free %>%
+  ggvis(x = ~per_exit_one_year, y = ~per_leg_free_first_day) %>%
+  layer_points() %>%
+  add_axis("x", title = "% Exiting within 1 year of being \"legally free\"") %>%
+  add_axis("y", title = "% of children who are legally free")
+
+})
+
+vis %>% bind_shiny("plot1")
+
+```
 
 Glossary
 =======================================================================  
 
-Legally Free  
-
-A child is legally free for adoption if the child has no legal parent, either because the parent has died or because parental rights have been terminated (through relinquishment or involuntary termination) by a court order.  
+**Legally Free** - A child is legally free for adoption if the child has no legal parent, either because the parent has died or because parental rights have been terminated (through relinquishment or involuntary termination) by a court order.  
 
 
 
