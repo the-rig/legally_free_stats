@@ -25,11 +25,14 @@ vertical_layout: scroll
 library(flexdashboard)
 library(rgdal)
 library(leaflet)
-library(dplyr)
+library(ggvis)
+library(ggplot2)
+library(scales)
 library(magrittr)
 library(readr)
 library(knitr)
 library(shiny)
+library(dplyr)
 ```
 
 ```{r}
@@ -68,10 +71,10 @@ This map shows the point-in-time percentage of legally free children in each sta
 
 Prepared by Partners for Our Children
 
-Maps
+Map
 -------------------------------------
     
-### Point-In-Time Rates
+###  
     
 ```{r}
 states <- readOGR("StUS_GCS12.shp",
@@ -130,7 +133,7 @@ leaflet(data = STATE_SHP()) %>%
               fillOpacity = 0.7, 
               color = "white",
               opacity = 1,
-              #dashArray = '3',
+              # dashArray = '3',
               weight = 2, 
               popup = state_popup) %>%
   addLegend("bottomleft", 
@@ -165,10 +168,10 @@ This map at the shows the percentage of children who exit to "legal permanency" 
 
 Prepared by Partners for Our Children
 
-Maps
+Map
 -------------------------------------
 
-### Entries To and Exits From "Legally Free"
+###  
 
 ```{r}
 states <- readOGR("StUS_GCS12.shp",
@@ -236,4 +239,70 @@ leaflet(data = STATE_SHP2()) %>%
   
 })
 ```
+
+
+Next tab
+=======================================================================  
+
+Choose a Year {.sidebar}
+-------------------------------------
+
+```{r}
+hr()
+
+selectInput("ffy3", label = "Federal fiscal year: ",
+            choices = 2010:2015, selected = 2015)
+
+
+selectInput("age_at_latrem2", label = "Age group when entering care: "
+            , choices = c("All" = 0, "0-4" = 1, "5-9" = 2, "10-14" = 3, "15-17" = 4)
+            , selected = 0)
+
+```
+
+
+Prepared by Partners for Our Children
+
+Graph
+-------------------------------------
+
+###  
+
+```{r}
+
+# state specific zipcodes and data
+data_input <- reactive({
+  
+dat_legally_free %>%
+  filter(ffy == input$ffy3, age_at_latrem == input$age_at_latrem2) 
+
+}) # END OF REACTIVE
+
+renderPlot({
+
+  # data_input() %>%
+  # ggvis(x = ~per_exit_one_year, y = ~per_leg_free_first_day) %>%
+  # layer_points() %>%
+  # add_axis("x", title = "% Exiting within 1 year of being \"legally free\"") %>%
+  # add_axis("y", title = "% of children who are legally free") #%>%
+  # bind_shiny("plot")
+  # add_tooltip(paste(), "click") 
+
+  # plot <- 
+    ggplot(data_input(), aes(x = per_exit_one_year, y = per_leg_free_first_day)) +
+    geom_point(size = 3, col = "#3B6E8F") +
+    scale_x_continuous(labels = percent) +
+    scale_y_continuous(labels = percent) +
+    labs(x = "% exiting within a year of becoming legally free", y = "% of legally free children in out-of-home care") +
+    theme_classic(base_size = 18)
+
+  # print(plot)
+  
+}) 
+
+
+```
+
+Next tab
+=======================================================================  
     
