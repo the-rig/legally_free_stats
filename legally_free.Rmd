@@ -25,7 +25,6 @@ vertical_layout: scroll
 library(flexdashboard)
 library(rgdal)
 library(leaflet)
-library(ggvis)
 library(ggplot2)
 library(scales)
 library(magrittr)
@@ -61,7 +60,7 @@ hr()
 selectInput("ffy", label = "Federal fiscal year: ",
             choices = 2010:2016, selected = 2016)
 
-selectInput("age_at_latrem", label = "Age group at last removal: "
+selectInput("age_at_start", label = "Age group first day of FFY: "
             , choices = c("All" = 0, "0-4" = 1, "5-9" = 2, "10-14" = 3, "15-17" = 4)
             , selected = 0)
 
@@ -93,8 +92,8 @@ STATE_SHP <- reactive({
   
 states@data <- states@data %>%
   inner_join(dat_legally_free, by = c("st_abbrev" = "st")) %>%
-  filter(ffy == input$ffy, age_at_latrem == input$age_at_latrem) %>%
-  left_join(ref_age_groups, by = c("age_at_latrem" = "cd_age"))
+  filter(ffy == input$ffy, age_at_start == input$age_at_start) %>%
+  left_join(ref_age_groups, by = c("age_at_start" = "cd_age"))
 
 STATE_SHP <- states
   
@@ -184,8 +183,8 @@ STATE_SHP2 <- reactive({
   
 states@data <- states@data %>%
   inner_join(dat_legally_free, by = c("st_abbrev" = "st")) %>%
-  filter(ffy == input$ffy2, age_at_latrem == input$age_at_lf) %>%
-  left_join(ref_age_groups, by = c("age_at_latrem" = "cd_age"))
+  filter(ffy == input$ffy2, age_at_lf == input$age_at_lf) %>%
+  left_join(ref_age_groups, by = c("age_at_lf" = "cd_age"))
 
 STATE_SHP2 <- states
   
@@ -241,7 +240,7 @@ leaflet(data = STATE_SHP2()) %>%
 ```
 
 
-Next tab
+Percent of "Legally Free" Children and Length of Stay
 =======================================================================  
 
 Choose a Year {.sidebar}
@@ -254,12 +253,13 @@ selectInput("ffy3", label = "Federal fiscal year: ",
             choices = 2010:2015, selected = 2015)
 
 
-selectInput("age_at_latrem2", label = "Age group when entering care: "
+selectInput("age_at_start2", label = "Age group when entering care: "
             , choices = c("All" = 0, "0-4" = 1, "5-9" = 2, "10-14" = 3, "15-17" = 4)
             , selected = 0)
 
 ```
 
+This graph shows the percentage of legally free children exiting to permancy within one year of becoming legally free against the percentage of children in out-of-home care that are legally free. 
 
 Prepared by Partners for Our Children
 
@@ -274,7 +274,8 @@ Graph
 data_input <- reactive({
   
 dat_legally_free %>%
-  filter(ffy == input$ffy3, age_at_latrem == input$age_at_latrem2) 
+  filter(ffy == input$ffy3, age_at_start == input$age_at_start2) %>%
+    filter(per_leg_free_first_day != 0)
 
 }) # END OF REACTIVE
 
@@ -288,9 +289,10 @@ renderPlot({
   # bind_shiny("plot")
   # add_tooltip(paste(), "click") 
 
-  # plot <- 
+  # plot <- `
     ggplot(data_input(), aes(x = per_exit_one_year, y = per_leg_free_first_day)) +
     geom_point(size = 3, col = "#3B6E8F") +
+    geom_smooth(method = "lm") +
     scale_x_continuous(labels = percent) +
     scale_y_continuous(labels = percent) +
     labs(x = "% exiting within a year of becoming legally free", y = "% of legally free children in out-of-home care") +
@@ -305,4 +307,20 @@ renderPlot({
 
 Next tab
 =======================================================================  
-    
+
+Graph
+-------------------------------------
+
+###  
+
+Glossary
+=======================================================================  
+
+Legally Free  
+
+A child is legally free for adoption if the child has no legal parent, either because the parent has died or because parental rights have been terminated (through relinquishment or involuntary termination) by a court order.  
+
+
+
+
+
