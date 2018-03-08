@@ -275,7 +275,7 @@ data_input <- reactive({
   
 dat_legally_free %>%
   filter(ffy == input$ffy3, age_at_start == input$age_at_start2) %>%
-    filter(per_leg_free_first_day != 0)
+    filter(per_leg_free_first_day != 0, !is.na(per_exit_one_year), !is.na(per_leg_free_first_day))
 
 }) # END OF REACTIVE
 
@@ -295,10 +295,9 @@ renderPlot({
     geom_smooth(method = "lm") +
     scale_x_continuous(labels = percent) +
     scale_y_continuous(labels = percent) +
+    # coord_cartesian(xlim = c(0, max(data_input$per_exit_one_year * 1.15)), ylim = c(0, max(data_input$per_leg_free_first_day * 1.15))) +
     labs(x = "% exiting within a year of becoming legally free", y = "% of legally free children in out-of-home care") +
     theme_classic(base_size = 18)
-
-  # print(plot)
   
 }) 
 
