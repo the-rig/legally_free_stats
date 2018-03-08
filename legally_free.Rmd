@@ -275,7 +275,7 @@ data_input <- reactive({
   
 dat_legally_free %>%
   filter(ffy == input$ffy3, age_at_start == input$age_at_start2) %>%
-    filter(per_leg_free_first_day != 0, !is.na(per_exit_one_year), !is.na(per_leg_free_first_day))
+    filter(per_leg_free_first_day != 0)
 
 }) # END OF REACTIVE
 
