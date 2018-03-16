@@ -1,5 +1,5 @@
 ---
-title: "National 'Legally Free' Rates"
+title: "Legally Free Rates of U.S. Children in Foster Care"
 resource_files:
 - StUS_GCS12.dbf
 - StUS_GCS12.prj
@@ -23,33 +23,25 @@ vertical_layout: scroll
 ```{r setup, include=FALSE, message=FALSE}
 # Load packages and initialize data here
 library(flexdashboard)
+library(geojsonio)
 library(rgdal)
 library(leaflet)
 library(ggplot2)
+library(ggvis)
+library(plotly)
+library(dygraphs)
+library(htmlwidgets)
 library(scales)
 library(magrittr)
 library(readr)
 library(knitr)
+library(tibble)
 library(shiny)
+library(tidyr)
 library(dplyr)
 ```
 
-```{r}
-states <- readOGR("StUS_GCS12.shp",
-                  layer = "StUS_GCS12", GDAL1_integer64_policy = TRUE, verbose = FALSE)
-
-dat_legally_free <- read.csv("legally_free_ages.csv")
-
-# creating ref table 
-
-cd_age <- 0:4
-tx_age <- c("All", "0-4", "5-9", "10-14", "15-17")
-ref_age_groups <- data.frame(cd_age, tx_age)
-
-```
-
-
-Point-In-Time Rates
+How many are there?
 =======================================================================
 
 Choose a Year {.sidebar}
@@ -58,7 +50,7 @@ Choose a Year {.sidebar}
 hr()
 
 selectInput("ffy", label = "Federal fiscal year: ",
-            choices = 2010:2016, selected = 2016)
+            choices = 2010:2015, selected = 2015)
 
 selectInput("age_at_start", label = "Age group first day of FFY: "
             , choices = c("All" = 0, "0-4" = 1, "5-9" = 2, "10-14" = 3, "15-17" = 4)
@@ -76,22 +68,24 @@ Map
 ###  
     
 ```{r}
-states <- readOGR("StUS_GCS12.shp",
-                  layer = "StUS_GCS12", GDAL1_integer64_policy = TRUE, verbose = FALSE)
+# load states shape file
+states <- geojsonio::geojson_read("http://eric.clst.org/assets/wiki/uploads/Stuff/gz_2010_us_040_00_20m.json",
+  what = "sp")
 
-dat_legally_free <- read.csv("legally_free_ages.csv")
+# load legally free data
+dat_legally_free <- read.csv("legally_free_ages.csv") %>%
+  mutate(stfips = stringr::str_pad(stfips, 2, pad = "0")) # make state code joinable
 
-# creating ref table 
-
+# create ref table for age
 cd_age <- 0:4
 tx_age <- c("All", "0-4", "5-9", "10-14", "15-17")
 ref_age_groups <- data.frame(cd_age, tx_age)
 
-# state specific zipcodes and data
+# reactive to get year and age filtered data
 STATE_SHP <- reactive({
   
 states@data <- states@data %>%
-  inner_join(dat_legally_free, by = c("st_abbrev" = "st")) %>%
+  inner_join(dat_legally_free, by = c("STATE" = "stfips")) %>%
   filter(ffy == input$ffy, age_at_start == input$age_at_start) %>%
   left_join(ref_age_groups, by = c("age_at_start" = "cd_age"))
 
@@ -99,16 +93,16 @@ STATE_SHP <- states
   
 }) # END OF REACTIVE
 
-# color palette
 renderLeaflet({
-  
-pal <- colorBin(palette = "PuBu", domain = STATE_SHP()$per_leg_free_first_day*100, bins = 8)
 
-state_popup <- paste0("<h3><strong>",
+  # color palette  
+  pal <- colorBin(palette = "PuBu", domain = STATE_SHP()$per_leg_free_first_day*100, bins = 8)
+  # setting for pop-up
+  state_popup <- paste0("<h3><strong>",
                       scales::percent(STATE_SHP()$per_leg_free_first_day),
                       " Legally Free</strong></h3>",
                       "In the <strong>State of ", 
-                      STATE_SHP()$atlas_name,
+                      STATE_SHP()$NAME,
                       "</strong>, ",
                       "on the first day of federal fiscal year <strong>", 
                       STATE_SHP()$ffy, 
@@ -125,30 +119,29 @@ state_popup <- paste0("<h3><strong>",
                       "</strong> of those children",
                       " were legally free."
                       )
-# plot the map
-leaflet(data = STATE_SHP()) %>%
-  addProviderTiles(providers$Esri.WorldGrayCanvas) %>% 
-  addPolygons(fillColor = ~pal(STATE_SHP()$per_leg_free_first_day*100), 
-              fillOpacity = 0.7, 
-              color = "white",
-              opacity = 1,
-              # dashArray = '3',
-              weight = 2, 
-              popup = state_popup) %>%
-  addLegend("bottomleft", 
-            pal = pal, 
-            values = ~STATE_SHP()$per_leg_free_first_day*100,
-            title = "% Legally Free",
-            opacity = 1)
   
-  
-})
+  # plot the map
+  leaflet(data = STATE_SHP()) %>%
+    addProviderTiles(providers$Esri.WorldGrayCanvas) %>% 
+    addPolygons(fillColor = ~pal(STATE_SHP()$per_leg_free_first_day*100), 
+                fillOpacity = 0.7, 
+                color = "white",
+                opacity = 1,
+                weight = 2, 
+                popup = state_popup) %>%
+    addLegend("bottomleft", 
+              pal = pal, 
+              values = ~STATE_SHP()$per_leg_free_first_day*100,
+              title = "% Legally free",
+              opacity = 1)
+  })
+
 ```
 
-Entries To and Exits From "Legally Free"
+How quickly do they exit from care?
 =======================================================================    
 
-Choose a Year {.sidebar}
+Choose filters {.sidebar}
 -------------------------------------
 
 ```{r}
@@ -173,16 +166,13 @@ Map
 ###  
 
 ```{r}
-states <- readOGR("StUS_GCS12.shp",
-                  layer = "StUS_GCS12", GDAL1_integer64_policy = TRUE, verbose = FALSE)
+states <- geojsonio::geojson_read("http://eric.clst.org/assets/wiki/uploads/Stuff/gz_2010_us_040_00_20m.json",
+  what = "sp")
 
-# dat_legally_free <- read.csv("legally_free_ages.csv") 
-
-# state specific zipcodes and data
 STATE_SHP2 <- reactive({
   
 states@data <- states@data %>%
-  inner_join(dat_legally_free, by = c("st_abbrev" = "st")) %>%
+  inner_join(dat_legally_free, by = c("STATE" = "stfips")) %>%
   filter(ffy == input$ffy2, age_at_lf == input$age_at_lf) %>%
   left_join(ref_age_groups, by = c("age_at_lf" = "cd_age"))
 
@@ -190,12 +180,11 @@ STATE_SHP2 <- states
   
 }) # END OF REACTIVE
 
-# color palette
 renderLeaflet({
   
-pal <- colorBin(palette = "PuBu", domain = STATE_SHP2()$per_exit_one_year*100, bins = 8)
-
-state_popup <- paste0("<h3><strong>",
+  pal <- colorBin(palette = "PuBu", domain = STATE_SHP2()$per_exit_one_year*100, bins = 8)
+  
+  state_popup <- paste0("<h3><strong>",
                       scales::percent(STATE_SHP2()$per_exit_one_year),
                       " Acheiving Permanency within 1 Year</strong></h3>",
                       "In the <strong>State of ", 
@@ -220,19 +209,19 @@ state_popup <- paste0("<h3><strong>",
                       " acheived legal permanency within 365 days.")
                       
 # plot the map
-leaflet(data = STATE_SHP2()) %>%
-  addProviderTiles(providers$Esri.WorldGrayCanvas) %>% 
-  addPolygons(fillColor = ~pal(STATE_SHP2()$per_exit_one_year*100), 
+  
+  leaflet(data = STATE_SHP2()) %>%
+    addProviderTiles(providers$Esri.WorldGrayCanvas) %>% 
+    addPolygons(fillColor = ~pal(STATE_SHP2()$per_exit_one_year*100), 
               fillOpacity = 0.7, 
               color = "white",
               opacity = 1,
-              #dashArray = '3',
               weight = 2, 
               popup = state_popup) %>%
-  addLegend("bottomleft", 
+    addLegend("bottomleft", 
             pal = pal, 
             values = ~STATE_SHP2()$per_exit_one_year*100,
-            title = "% Exiting w/in 1 yr",
+            title = "% Exiting in one year",
             opacity = 1)
   
   
@@ -240,10 +229,10 @@ leaflet(data = STATE_SHP2()) %>%
 ```
 
 
-Percent of "Legally Free" Children and Length of Stay
+What is the relationship?
 =======================================================================  
 
-Choose a Year {.sidebar}
+Choose filters {.sidebar}
 -------------------------------------
 
 ```{r}
@@ -270,92 +259,129 @@ Graph
 
 ```{r}
 
-# state specific zipcodes and data
 data_input <- reactive({
   
-dat_legally_free %>%
-  filter(ffy == input$ffy3, age_at_start == input$age_at_start2) %>%
-    filter(per_leg_free_first_day != 0)
+  dat_legally_free %>%
+    filter(ffy == input$ffy3, age_at_start == input$age_at_start2) %>%
+    filter(per_leg_free_first_day != 0) %>%
+    mutate(`Percent legally free` = round(per_leg_free_first_day*100, 2),
+            `Percent exiting in one year` = round(per_exit_one_year*100, 2),
+            State = st) 
 
 }) # END OF REACTIVE
 
-renderPlot({
+renderPlotly({
 
-  # data_input() %>%
-  # ggvis(x = ~per_exit_one_year, y = ~per_leg_free_first_day) %>%
-  # layer_points() %>%
-  # add_axis("x", title = "% Exiting within 1 year of being \"legally free\"") %>%
-  # add_axis("y", title = "% of children who are legally free") #%>%
-  # bind_shiny("plot")
-  # add_tooltip(paste(), "click") 
-
-  # plot <- `
-    ggplot(data_input(), aes(x = per_exit_one_year, y = per_leg_free_first_day)) +
-    geom_point(size = 3, col = "#3B6E8F") +
-    geom_smooth(method = "lm") +
-    scale_x_continuous(labels = percent) +
-    scale_y_continuous(labels = percent) +
-    # coord_cartesian(xlim = c(0, max(data_input$per_exit_one_year * 1.15)), ylim = c(0, max(data_input$per_leg_free_first_day * 1.15))) +
-    labs(x = "% exiting within a year of becoming legally free", y = "% of legally free children in out-of-home care") +
-    theme_classic(base_size = 18)
+    gg_plot <- ggplot(data_input(), aes(x = `Percent exiting in one year`, y = `Percent legally free`)) +
+      geom_point(size = 2, aes(color = State)#col = "#3B6E8F"
+                   ) +
+      geom_smooth(method = "lm") +
+      #scale_x_continuous(labels = percent) +
+      #scale_y_continuous(labels = percent) +
+      # coord_cartesian(xlim = c(0, max(data_input$per_exit_one_year * 1.15)), ylim = c(0, max(data_input$per_leg_free_first_day * 1.15))) +
+      scale_color_discrete(guide = FALSE) +
+      labs(x = "% exiting within one year of becoming legally free", y = "% of legally free children in out-of-home care") +
+      theme_classic(base_size = 14)
+    
+    ggplotly(gg_plot, tooltip = c("State", "`Percent legally free`", "`Percent exiting in one year`")
+             )
   
 }) 
 
-
-```
-
-```{r}
-
-
 ```
 
 
-Next tab
+Are trends changing?
 =======================================================================  
-
-High Charts Attempt
-=======================================================================  
-
-Choose a Year {.sidebar}
+Choose an Age {.sidebar}
 -------------------------------------
 
 ```{r}
 hr()
 
-selectInput("ffy3", label = "Federal fiscal year: ",
-            choices = 2010:2015, selected = 2015)
+dat_legally_free_long <- dat_legally_free %>%
+  gather(legally_free, percent, c(per_leg_free_first_day, per_exit_one_year)) %>%
+  mutate(Percent = round(percent*100, 2),
+         State = st)
 
-
-selectInput("age_at_start2", label = "Age group when entering care: "
+selectInput("age", label = "Age group:"
             , choices = c("All" = 0, "0-4" = 1, "5-9" = 2, "10-14" = 3, "15-17" = 4)
-            , selected = 0)
+            , selected = "All")
+
+selectInput("legally_free",
+            label = "% Legally free",
+            choices = c("In out-of-home care" = "per_leg_free_first_day",
+                        "Exiting in one year" = "per_exit_one_year"),
+            selected = "In out-of-home care")
+
+sliderInput("percent_slide3",
+            label = "Select a % to search above:",
+            min = 0,
+            max = 1,
+            value = 0)
 
 ```
-
-GGVIS Attempt
-=======================================================================  
 
 Graph
 -------------------------------------
 
+### 
+
 ```{r}
 
-vis <- reactive({
+data_input2 <- reactive({
   
-# data_input <- dat_legally_free %>%
-#   filter(ffy == input$ffy3, age_at_start == input$age_at_start2) %>%
-#     filter(per_leg_free_first_day != 0)
-
-  dat_legally_free %>%
-  ggvis(x = ~per_exit_one_year, y = ~per_leg_free_first_day) %>%
-  layer_points() %>%
-  add_axis("x", title = "% Exiting within 1 year of being \"legally free\"") %>%
-  add_axis("y", title = "% of children who are legally free")
-
+  if(input$legally_free == "per_leg_free_first_day") {
+    
+    age_data <- dat_legally_free_long %>%
+      filter(age_at_start == input$age)
+  } else {
+    age_data <- dat_legally_free_long %>%
+      filter(age_at_lf == input$age)
+  }
+  
+  filtered_data <- age_data %>%
+    filter(legally_free == input$legally_free,
+           ffy != 2016
+           ) %>%
+    group_by(st) %>%
+    filter(any(percent >= input$percent_slide3
+               )) %>%
+    ungroup() 
+  
+  shiny::validate(
+    need(input$percent_slide3 <= max(filtered_data$percent, na.rm = TRUE),
+    "There are no data points above your selected percent.")
+    )
+  
+  filtered_data
+  
 })
 
-vis %>% bind_shiny("plot1")
+y_label <- reactive({
+  if(input$legally_free == "per_leg_free_first_day") {
+    "% of legally free children in out-of-home care"
+  } else {
+    "% exiting within one year of becoming legally free"
+  }
+})
 
+renderPlotly({ 
+#renderPlot({  
+  gg_plot2 <- ggplot(data_input2(), 
+    aes(x = ffy, y = Percent, color = State)) +
+    geom_line(#aes(alpha = alpha_vector)
+              ) +
+    scale_x_continuous(breaks = c(2010:2015)) +
+    #scale_y_continuous(labels = percent) +
+    #scale_colour_hue(l = 50, c = 100) +
+    labs(x = "federal fiscal year", y = y_label()) +
+    theme_classic(base_size = 14)
+  
+  ggplotly(gg_plot2, tooltip = c("State", "Percent")
+           )
+  
+})
 ```
 
 Glossary
